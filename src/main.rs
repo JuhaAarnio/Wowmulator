@@ -20,11 +20,11 @@ fn main() {
     if damage_taken_per_second == 0.0 {
         println!("No damage taken, simulation might never finish!");
     }
+
     println!("{}:{}",damage_taken_per_second, stagger_percentage);
     let maximum_stagger = (damage_taken_per_second / stagger_percentage) * 10.0;
     let mut current_stagger : f32 = 0.0;
     let mut time : u8 = 0;
-
     while current_stagger < maximum_stagger {
         time = time + 1;
         let previous_stagger : f32 = current_stagger;
@@ -36,4 +36,6 @@ fn main() {
             break;
         }
     }
+    
 }
+
