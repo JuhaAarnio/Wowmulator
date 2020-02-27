@@ -1,5 +1,10 @@
 use std::io;
 fn main() {
+    let mut maximum_hitpoints = String::new();
+    println!("Type in your maximum hitpoints");
+    io::stdin().read_line(&mut maximum_hitpoints).expect("Failed to read the value");
+    let maximum_hitpoints : f32 = maximum_hitpoints.trim().parse().unwrap();
+
     let mut stagger_percentage = String::new();
     println!("Type in your stagger percentage");
     io::stdin().read_line(&mut stagger_percentage).expect("Failed to read the value");
@@ -22,17 +27,24 @@ fn main() {
     }
     println!("{}:{}",damage_taken_per_second, stagger_percentage);
     let maximum_stagger = (damage_taken_per_second / stagger_percentage) * 10.0;
+    let stagger_cap = maximum_hitpoints * 10.0;
     let mut current_stagger : f32 = 0.0;
     let mut time : u8 = 0;
 
     while current_stagger < maximum_stagger {
         time = time + 1;
         let previous_stagger : f32 = current_stagger;
-        current_stagger += damage_taken_per_second * stagger_percentage; 
-        current_stagger = current_stagger - current_stagger / 10.0;
-        println!("{}",current_stagger);
-        if current_stagger == previous_stagger {
-            println!("Reached maximum stagger of {} in {} seconds", current_stagger, time);
+        if current_stagger <= stagger_cap {
+            current_stagger += damage_taken_per_second * stagger_percentage; 
+            current_stagger = current_stagger - current_stagger / 10.0;
+            println!("{}",current_stagger as u32);  
+        }
+        else {
+            current_stagger = stagger_cap;
+            println!("Hit stagger cap!");
+        }
+        if current_stagger == previous_stagger || current_stagger == stagger_cap {
+            println!("Reached maximum stagger of {} in {} seconds", current_stagger as u32, time);
             break;
         }
     }
