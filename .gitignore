@@ -1,2 +1,6 @@
 /target
 **/*.rs.bk
+.vs/Wowmulator/v16/.suo
+.vs/VSWorkspaceState.json
+.vs/slnx.sqlite
+.vs/ProjectSettings.json
