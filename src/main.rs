@@ -1,5 +1,10 @@
 use std::io;
+use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::prelude::*;
+
 fn main() {
+    create_file();
     let mut maximum_hitpoints = String::new();
     println!("Type in your maximum hitpoints");
     io::stdin().read_line(&mut maximum_hitpoints).expect("Failed to read the value");
@@ -34,6 +39,7 @@ fn main() {
     while current_stagger < maximum_stagger {
         time = time + 1;
         let previous_stagger : f32 = current_stagger;
+        write_plot_file(current_stagger as u32);
         if current_stagger <= stagger_cap {
             current_stagger += damage_taken_per_second * stagger_percentage; 
             current_stagger = current_stagger - current_stagger / 10.0;
@@ -49,5 +55,20 @@ fn main() {
         }
     }
     
+}
+
+fn create_file(){
+    File::create("stagger.txt").expect("Failed to create a file");
+}
+
+fn write_plot_file(stagger_value : u32) {
+    let mut graph_sign = String::new();
+    let mut write_buffer = OpenOptions::new().append(true).open("stagger.txt").unwrap();
+    let mut i : u32 = 0;
+    while i < stagger_value {
+        graph_sign.push_str("=");
+        i = i + 1;
+    }
+    writeln!(write_buffer, "{}", graph_sign).expect("failed to write to a file");
 }
 
